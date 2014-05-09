@@ -2,18 +2,71 @@
 <head>
     <meta name="viewport" content="width=device-width">
 
-<style>
-    video {
-        width: 100%;
-        max-height: 100%;
-    }
-</style>
+    <style>
+        body {
+            background-color: #000000;
+            margin: 0;
+        }
+
+        video {
+            width: 100%;
+            max-height: 100%;
+        }
+    </style>
 </head>
 <body>
 
-<video controls="" autoplay="" name="media">
-    <source src="assets/despicable_me.webm" type="video/webm">
-</video>
+<select>
+    <option value="">Select a Movie</option>
+    <option value="despicable_me">Despicable Me</option>
+    <option value="1_harry_potter_sorcerers_stone">Harry Potter - Sorcerer's Stone</option>
+    <option value="jungle_book">Jungle Book</option>
+    <option value="monsters_inc">Monsters Inc.</option>
+</select>
+
+<div class="video-container"></div>
+
+<script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.11/firebase.js'></script>
+<script src="js/jquery.min.js"></script>
+<script>
+    var refMovieTitle = new Firebase('https://fiery-fire-3139.firebaseio.com/movie_title');
+    var refMovieCurrentTime = new Firebase('https://fiery-fire-3139.firebaseio.com/movie_current_time');
+
+    var videoElem = null;
+    $(function () {
+        var $videoContainer = $(".video-container");
+
+        $("select").change(function () {
+            var val = $(this).val();
+
+            if (!val) {
+                $videoContainer.empty();
+                return;
+            }
+
+            var $source = $("<source>")
+                    .attr({
+                        src: "assets/" + val + ".webm",
+                        type: "video/webm"
+                    });
+            var $video = $("<video></video>")
+                    .attr({
+                        name: "media",
+                        controls: "",
+                        autoplay: ""
+                    }).append($source);
+            $videoContainer.empty().append($video);
+            videoElem = $video[0];
+
+            refMovieTitle.set(val);
+        });
+    });
+
+    setInterval(function() {
+        if (videoElem == null) return;
+        refMovieCurrentTime.set(videoElem.currentTime);
+    }, 1000);
+</script>
 
 </body>
 </html>
