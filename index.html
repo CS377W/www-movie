@@ -29,8 +29,10 @@
 <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.11/firebase.js'></script>
 <script src="js/jquery.min.js"></script>
 <script>
-    var refMovieTitle = new Firebase('https://fiery-fire-3139.firebaseio.com/movie_title');
-    var refMovieCurrentTime = new Firebase('https://fiery-fire-3139.firebaseio.com/movie_current_time');
+    //var refMovieTitle = new Firebase('https://fiery-fire-3139.firebaseio.com/movie_title');
+    //var refMovieCurrentTime = new Firebase('https://fiery-fire-3139.firebaseio.com/movie_current_time');
+    var refMovieTitle = new Firebase('https://fiery-fire-3139.firebaseio.com/current_name');
+    var refMovieCurrentTime = new Firebase('https://fiery-fire-3139.firebaseio.com/current_time');
 
     var videoElem = null;
     $(function () {
