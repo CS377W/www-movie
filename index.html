@@ -58,6 +58,8 @@
             $videoContainer.empty().append($video);
             videoElem = $video[0];
 
+            // TODO: remove once everyone has up-to-date app
+            if (val === "despicable_me") val = "Despicable Me";
             refMovieTitle.set(val);
         });
     });
