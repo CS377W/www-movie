@@ -18,10 +18,15 @@
 
 <select>
     <option value="">Select a Movie</option>
-    <option value="despicable_me">Despicable Me</option>
-    <option value="1_harry_potter_sorcerers_stone">Harry Potter - Sorcerer's Stone</option>
-    <option value="jungle_book">Jungle Book</option>
-    <option value="monsters_inc">Monsters Inc.</option>
+    <option value="back_to_the_future.mp4">Back to the Future</option>
+    <option value="cloud_atlas.mp4">Cloud Atlas</option>
+    <option value="despicable_me.webm">Despicable Me</option>
+    <option value="1_harry_potter_sorcerers_stone.webm">Harry Potter - Sorcerer's Stone</option>
+    <option value="jungle_book.webm">Jungle Book</option>
+    <option value="lego_movie.mp4">The Lego Movie</option>
+    <option value="monsters_inc.webm">Monsters Inc.</option>
+    <option value="skyfall.mp4">Skyfall</option>
+    <option value="space_jam.mp4">Space Jam</option>
 </select>
 
 <div class="video-container"></div>
@@ -29,10 +34,8 @@
 <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.11/firebase.js'></script>
 <script src="js/jquery.min.js"></script>
 <script>
-    //var refMovieTitle = new Firebase('https://fiery-fire-3139.firebaseio.com/movie_title');
-    //var refMovieCurrentTime = new Firebase('https://fiery-fire-3139.firebaseio.com/movie_current_time');
-    var refMovieTitle = new Firebase('https://fiery-fire-3139.firebaseio.com/current_name');
-    var refMovieCurrentTime = new Firebase('https://fiery-fire-3139.firebaseio.com/current_time');
+    var ref = new Firebase('https://fiery-fire-3139.firebaseio.com/movie');
+    var curMovieTitle = null;
 
     var videoElem = null;
     $(function () {
@@ -48,7 +51,7 @@
 
             var $source = $("<source>")
                     .attr({
-                        src: "assets/" + val + ".webm",
+                        src: "assets/" + val,
                         type: "video/webm"
                     });
             var $video = $("<video></video>")
@@ -60,15 +63,14 @@
             $videoContainer.empty().append($video);
             videoElem = $video[0];
 
-            // TODO: remove once everyone has up-to-date app
-            if (val === "despicable_me") val = "Despicable Me";
-            refMovieTitle.set(val);
+            curMovieTitle = val.replace(/\..*/, "");
         });
     });
 
     setInterval(function() {
-        if (videoElem == null) return;
-        refMovieCurrentTime.set(videoElem.currentTime);
+        if (videoElem === null) return;
+        if (curMovieTitle === null) return;
+        ref.set({ title: curMovieTitle, time: (videoElem.currentTime | 0) });
     }, 1000);
 </script>
 
